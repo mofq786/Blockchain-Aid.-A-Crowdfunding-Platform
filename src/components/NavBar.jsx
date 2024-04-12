@@ -1,181 +1,93 @@
 import * as React from "react";
-// UI imports..
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Badge,
-  styled,
-  Avatar,
-  Button,
-  Box,
-  InputBase,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-import StorefrontIcon from "@mui/icons-material/Storefront";
-import EmailIcon from "@mui/icons-material/Email";
-//import BadgeUnstyled from "@mui/base/BadgeUnstyled";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import PersonIcon from "@mui/icons-material/Person";
-import CreateIcon from "@mui/icons-material/Create";
-import { LoadingButton } from "@mui/lab";
-import logo from "../assets/Logo6.png";
-// service imports..
-import { useAuth } from "../contexts/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { AppBar, Toolbar, Button, IconButton, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box, Menu, MenuItem } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import CampaignIcon from '@mui/icons-material/HowToVote';
+import GuideIcon from '@mui/icons-material/MenuBook';
+import CreateIcon from '@mui/icons-material/Create';
+import logo from "../assets/logo7.png";
+import { useWallet } from "use-wallet";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LoadingButton from '@mui/lab/LoadingButton';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { useState } from "react";
 
-// Wallet connection..
-import { useWallet } from "use-wallet";
-
-// Custom styling to components
-const StyledToolbar = styled(Toolbar)({
-  display: "flex",
-  justifyContent: "space-between",
-});
-
-const SearchBar = styled("div")(({ theme }) => ({
-  backgroundColor: "white",
-  padding: "0 10px",
-  borderRadius: theme.shape.borderRadius,
-  width: "40%",
-}));
-
-const UserActions = styled("div")(({ theme }) => ({
-  display: "none",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: "20px",
-  padding: "0 10px",
-  borderRadius: theme.shape.borderRadius,
-  [theme.breakpoints.up("sm")]: {
-    display: "flex",
-  },
-}));
-
-const UserProfile = styled("div")(({ theme }) => ({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: "10px",
-  borderRadius: theme.shape.borderRadius,
-  [theme.breakpoints.up("sm")]: {
-    display: "none",
-  },
-}));
-
 function NavBar() {
-  // hooks ..
+  const wallet = useWallet();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  // Changed initial state to null
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   const [profileMenuDisplayStatus, setProfileMenuDisplayStatus] =
     useState(false);
   // hooks..
   const [responseMsg, setResponseMsg] = React.useState(""); // to display error messages.
   const [showResponse, setShowResponse] = React.useState(false); // To know whether error occured. ⁉ why not use length of error message
   const [responseSeverity, setResponseSeverity] = React.useState("error");
-  const navigate = useNavigate();
 
-  const wallet = useWallet();
+  const menuItems = [
+    { name: "Home", icon: <HomeIcon />, path: "/" },
+    { name: "Campaigns", icon: <CampaignIcon />, path: "/active-campaigns" },
+    { name: "Guide", icon: <GuideIcon />, path: "/guide" },
+  ];
 
-  const { currentUserCredentials, signout } = useAuth();
-
-  const handleSignout = async () => {
-    // set the response activations to default.
-    setShowResponse(false);
-    setResponseMsg("");
-    setResponseSeverity("error"); // doesn't allowing to have empty, so kept this. Anyway, as showing is false, no worries.
-
-    // do signout.
-    try {
-      await signout();
-      navigate("/sign-in"); // navigate to sign-in page, after successful logout.
-    } catch (error) {
-      setShowResponse(true);
-      setResponseMsg(error.message);
-      setResponseSeverity("error");
-    }
-  };
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <List>
+        {menuItems.map((item, index) => (
+          <ListItem disablePadding key={index}>
+            <ListItemButton 
+              onClick={() => navigate(item.path)} 
+              selected={location.pathname === item.path}
+              sx={{ 
+                paddingY: 1, 
+                backgroundColor: location.pathname === item.path ? 'rgba(255, 255, 255, 0.08)' : 'inherit'
+              }}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
-    <AppBar position="sticky" sx={{ mb:2, background: "#000000", height : "110px"}}>
-      <StyledToolbar>
-      <Button
-              type="submit"
-              variant="text"
-              size = "large"
-              sx={{ mt: 2, mb: 2 }}
-              onClick={() => navigate("/")}
-            >
-               <img src={logo} alt="Blockchain-Aid" style={{ width: '240px', height: '96px' }} />
-            </Button>
-            
-        <StorefrontIcon
-          sx={{
-            display: {
-              xs: "block",
-              sm: "none",
-            },
-          }}
-        />
-        <Button
-        
-              variant="text"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={() => navigate("/active-campaigns")}
-            >
-              <Typography color="#ffffff">
-              Campaigns
-              </Typography>
-            </Button>
+    <AppBar position="sticky" sx={{ mb: 2, background: "#000000" }}>
+      <Toolbar>
         <Button
           variant="text"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={() => navigate("/guide")}
+          onClick={() => navigate("/")}
+          sx={{ flexGrow: 0, display: { xs: 'block', sm: 'block' } }} // Logo is always visible
         >
-            <Typography color="#ffffff">
-            Guide
-            </Typography>
+          <img src={logo} alt="Blockchain-Aid" style={{ maxHeight: "80px" }} />
         </Button>
-        {/* {<SearchBar>
-          <InputBase placeholder="Search.." />
-        </SearchBar> } */}
-        {/* {isLoggedIn && ( */}
-
-        <UserActions>
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' }, justifyContent: 'space-evenly' }}>
+          <Button variant="text" onClick={() => navigate("/active-campaigns")} 
+          color={location.pathname === "/active-campaigns" ? 'warning' : 'inherit'}
           
-          <Box sx={{ m: 0 }}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color = "secondary"
-              sx={{ mt: 3, mb: 2 }}
-              startIcon={<CreateIcon />}
-              onClick={() => navigate("/create-campaign")}
-            >
-              Create Campaign
-            </Button>
-          </Box>
-          {/* <Box>
-
-            <Button
-              fullWidth
-              variant="contained"
-              color = "success"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={() => navigate("/guide")}
-            >
-              Guide
-            </Button>
-          </Box> */}
+          >
+            Campaigns
+          </Button>
+          <Button variant="text" onClick={() => navigate("/guide")} sx={{ color: "#ffffff", mr:12 }}>
+            Guide
+          </Button>
+          
+          <Button variant="contained" color="success" onClick={() => navigate("/create-campaign")} sx={{ color: "#ffffff",ml:4 }}>
+            Create Campaign
+          </Button>
           {wallet.status === "connected" ? (
             <>
               <Button
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                
                 endIcon={<ExpandMoreIcon />}
                 onClick={() => setProfileMenuDisplayStatus(true)}
                 color="primary"
@@ -189,18 +101,15 @@ function NavBar() {
                 variant="contained"
                 loading={wallet.status === "connecting"}
                 loadingIndicator="Connecting..."
-                sx={{ mt: 3, mb: 2 }}
+
                 endIcon={<AccountBalanceWalletIcon />}
-                onClick={() => wallet.connect()}
+                onClick={() => wallet.connect("injected")}
               >
                 Connect Wallet
               </LoadingButton>
             </>
           )}
-        </UserActions>
-        {/*  */}
-      </StyledToolbar>
-      <Menu
+          <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
         // anchorEl={anchorEl}
@@ -215,7 +124,7 @@ function NavBar() {
           horizontal: "right",
         }}
       >
-        <MenuItem onClick={() => wallet.reset()}>
+        <MenuItem onClick={() =>{ wallet.reset(); setProfileMenuDisplayStatus(false);}}>
           <ListItemIcon>
             <AccountBalanceWalletIcon fontSize="small" />
           </ListItemIcon>
@@ -223,6 +132,27 @@ function NavBar() {
         </MenuItem>
       
       </Menu>
+        </Box>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="end"
+          onClick={handleDrawerToggle}
+          sx={{ ml: 'auto', display: { xs: 'flex', sm: 'none' } }} // Menu icon only on xs screens
+        >
+          <MenuIcon />
+        </IconButton>
+      </Toolbar>
+      <Drawer
+        anchor="right"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+      >
+        {drawer}
+      </Drawer>
     </AppBar>
   );
 }

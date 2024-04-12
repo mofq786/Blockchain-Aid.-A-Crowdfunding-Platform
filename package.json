@@ -10,6 +10,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@metamask/providers": "^16.0.0",
     "@mui/icons-material": "^5.10.9",
     "@mui/lab": "^5.0.0-alpha.109",
     "@mui/material": "^5.10.11",
@@ -24,6 +25,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.5",
     "react-router-dom": "^6.4.3",
+    "siwe": "^2.2.0",
     "solc": "^0.8.0",
     "use-wallet": "0.14.0",
     "web3": "^4.4.0"
