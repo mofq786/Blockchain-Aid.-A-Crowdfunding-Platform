@@ -14,8 +14,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import FillCampaignDetails from "./FillCampaignDetails";
-import SetMileStones from "./SetMileStones";
-import ReviewCampaignDetails from "./ReviewCampaignDetails";
+//import SetMileStones from "./SetMileStones";
+//import ReviewCampaignDetails from "./ReviewCampaignDetails";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -37,8 +37,8 @@ function getStepContent(step) {
   switch (step) {
     case 0:
       return <FillCampaignDetails />;
-    case 1:
-      return <ReviewCampaignDetails />;
+    // case 1:
+    //   return <ReviewCampaignDetails />;
     default:
       throw new Error("Unknown step");
   }

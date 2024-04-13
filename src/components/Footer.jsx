@@ -47,15 +47,15 @@ export default function Footer() {
             <LinkedInIcon sx={{ fontSize:  {xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem', xl: '2rem'}, mr: 1, color:"#ffffff" }}  />
             </a>
 
-            <a href="https://www.linkedin.com" target="blank">
+            <a href="https://www.instagram.com" target="blank">
             <InstagramIcon sx={{fontSize:  {xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem', xl: '2rem'}, mr: 1, color:"#ffffff" }} />
             </a>
 
-            <a href="https://www.linkedin.com" target="blank">
+            <a href="https://www.facebook.com" target="blank">
             <FacebookIcon sx={{ fontSize:  {xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem', xl: '2rem'}, mr: 1, color:"#ffffff" }} />
             </a>
            
-            <a href="https://www.linkedin.com" target="blank">
+            <a href="https://www.github.com" target="blank">
             <GitHubIcon sx={{ fontSize:  {xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem', xl: '2rem'}, mr: 1, color:"#ffffff" }} />
             </a>
           </Grid>
