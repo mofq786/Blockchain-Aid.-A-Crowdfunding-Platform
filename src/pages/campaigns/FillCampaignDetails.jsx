@@ -21,7 +21,7 @@ import Alert from "@mui/material/Alert";
 import { LoadingButton } from "@mui/lab";
 // local imports...
 import NavBar from "../../components/NavBar";
-
+import Footer from "../../components/Footer";
 // service imports..
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -393,6 +393,7 @@ function FillCampaignDetails() {
           {responseMsg}
         </Alert>
       </Snackbar>
+      <Footer/>
     </>
   );
 }

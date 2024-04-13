@@ -58,34 +58,33 @@ function ActiveCampaigns() {
 
   return (
     
-    <Box className="App" sx={{background: "linear-gradient(to bottom right, #990099 28%, #990099 100%)"}}>
+    <Box className="App" sx={{background: "linear-gradient(to bottom right, #C70039  0%, #C70039  100%)", minHeight:'100vh'}}>
       <NavBar />
       {/* <Stack direction="row" spacing={2}></Stack> */}
       <CssBaseline />
-      <Box sx={{background: "linear-gradient(to top left, #9966ff 0%, #6600ff 100%)",mt:1,mb:1,px:4,borderRadius: 3 }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-      <div>
-        <Typography variant="h2" color="#ffffff" gutterBottom>
-          Campaigns
+      <Box sx={{background: "linear-gradient(to right, #0f0c29, #302b63, #24243e)",mt:1,px:4,borderRadius: 12, alignItems:'center',justifyContent:'center', justifyItems:'center' }}>
+      <Grid container>
+        <Grid item xs={6}>
+        <Typography variant="body1" color="#ffffff" paragraph sx={{fontSize: {xs: '1.5rem', sm: '1.75rem', md: '2rem', lg: '2.25rem', xl: '2.5rem'},fontFamily:'revert', textAlign:'start',mt:0.5,py:1,px:2}} >
+          CAMPAIGNS
         </Typography>
-      </div>
-      <div style={{ marginLeft: 'auto' }}>
-      <Typography variant="body" color="#ffffff" paragraph style={{textAlign:'center',fontSize:'32px'}}>
-        {campaignsList.length} Campaigns Already Deployed
+        </Grid>
+        <Grid item xs={6}>
+        <Typography variant="body1" color="#ffffff" paragraph sx={{fontSize: {xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem', xl: '2rem'},fontFamily:'revert', textAlign:'end',mt:1.5,mb:1, py:1,px:2}} >
+        {campaignsList.length} Campaigns Deployed
       </Typography>
-      </div>
-    </div>
+      </Grid>
+      </Grid>
       </Box>
       
       <Container
         component="main"
         sx={{ mt: 3, mb: 2 }}
         justifyContent="center"
-        maxWidth="md"
-        background="linear-gradient(to bottom right, #990099 28%, #990099 100%)"
+        background="linear-gradient(to bottom right, #C70039  0%, #C70039  100%)"
       >
 
-    <Box sx={{ mt: 4, mb: 2, background: "linear-gradient(to bottom right, #990099 28%, #990099 100%)" }}>
+    <Box sx={{ mt: 4, mb: 2, background: "linear-gradient(to bottom right, #C70039  0%, #C70039  100%)" }}>
           <Stack>
             <Stack
               direction={"row"}
@@ -95,7 +94,7 @@ function ActiveCampaigns() {
     >
               
             </Stack>
-            <Container sx={{ py: 2 }} Width="90%" background= "linear-gradient(to bottom right, #990099 28%, #990099 100%)">
+            <Container sx={{ py: 2 }} Width="90%" background= "linear-gradient(to bottom right, #C70039  0%, #C70039  100%)">
               {/* End hero unit */}
               {/* load as long as data is not fetched. */}
               {campaignsList.length == 0 && (
@@ -103,7 +102,7 @@ function ActiveCampaigns() {
               )}
               <Grid container spacing={4}>
                 {campaignsList.map((activeCampaign, idx) => (
-                  <Grid item key={idx} xs={12} sm={6} md={4}>
+                  <Grid item key={idx} xs={6} sm={3} md={2} xl={3}>
                     <CampaignCard details={activeCampaign} />
                   </Grid>
                 ))}
@@ -112,7 +111,7 @@ function ActiveCampaigns() {
           </Stack>
         </Box>
       </Container>
-      
+      <Footer/>
     </Box>
   );
 }

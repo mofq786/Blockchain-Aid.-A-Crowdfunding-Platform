@@ -1,79 +1,79 @@
-// MetaMaskGuidePage.js
-
-import React from 'react';
-import { Container, Typography, Button, Link, Paper, Box } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Paper, Grid, Box, Typography, List, ListItem, ListItemText, Collapse, IconButton } from '@mui/material';
 import CssBaseline from "@mui/material/CssBaseline";
 import NavBar from "../components/NavBar";
+import Footer from '../components/Footer';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import { Menu } from '@mui/icons-material';
+import MetamaskPage from './page/Metamask';
+import ChromePage from './page/Chrome';
+import BravePage from './page/Brave';
+import FirefoxPage from './page/Firefox';
+import EdgePage from './page/Edge';
+import GettingStartedPage from './page/GettingStarted';
 
 const Guide = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedPage, setSelectedPage] = useState('Metamask');
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
   return (
-    <Box className="App" sx={{background: "linear-gradient(to bottom right, #000099 0%, #000099 100%)"}}>
+    <Box className="App" sx={{ background: "linear-gradient(to bottom right, #C70039  0%, #C70039  100%)" }}>
       <NavBar />
-      {/* <Stack direction="row" spacing={2}></Stack> */}
       <CssBaseline />
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-        
-        <Typography variant="h3" color="primary" gutterBottom>
-          MetaMask Installation and Usage Guide
-        </Typography>
-        <Typography variant="body1">
-          Welcome to the MetaMask Installation and Usage Guide. Follow the steps below to get started:
+      <Grid container spacing={2} style={{px:2}}>
+      <Grid item xs={12} md={3}>
+      <Paper elevation={3} sx={{ height: '100%', paddingLeft: 2, paddingRight: 2 }}>
+        <Typography variant="body1" fontWeight="bold" color="#000000" paragraph sx={{ fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem', xl: '2rem' }, py: 2, fontFamily: 'monospace', textAlign: 'center' }}>
+          Table of Contents
         </Typography>
 
-        <Typography variant="h5" mt={3} color="primary">
-          Step 1: Install MetaMask
-        </Typography>
-        <Typography variant="body1">
-          Visit the official MetaMask website at{' '}
-          <Link href="https://metamask.io/" target="_blank" rel="noopener noreferrer" color="primary">
-            https://metamask.io/
-          </Link>{' '}
-          and follow the instructions to install the MetaMask extension for your browser.
-        </Typography>
-
-        <Typography variant="h5" mt={3} color="primary">
-          Step 2: Create a Wallet
-        </Typography>
-        <Typography variant="body1">
-          Once MetaMask is installed, click on the extension icon in your browser's toolbar. Follow the prompts to create
-          a new wallet. Make sure to save your secret backup phrase in a secure place.
-        </Typography>
-
-        <Typography variant="h5" mt={3} color="primary">
-          Step 3: Connect to our DApp
-        </Typography>
-        <Typography variant="body1">
-          Visit our DApp and navigate to the section where MetaMask integration is required. Click the "Connect with
-          MetaMask" button, and approve the connection in the MetaMask pop-up.
-        </Typography>
-
-        <Typography variant="h5" mt={3} color="primary">
-          Step 4: Transaction Confirmation
-        </Typography>
-        <Typography variant="body1">
-          When interacting with our DApp, MetaMask may prompt you to confirm transactions. Review the details and click
-          "Confirm" to proceed.
-        </Typography>
-
-        <Typography variant="body1" mt={4}>
-          Congratulations! You've successfully installed MetaMask and connected it to our DApp. If you encounter any
-          issues, feel free to reach out for assistance.
-        </Typography>
-
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
-          <Button
-            component={RouterLink}
-            to="/"
-            variant="contained"
-            color="primary"
-            sx={{ backgroundColor: '#4caf50', '&:hover': { backgroundColor: '#45a049' } }}
-          >
-            Back to Home
-          </Button>
-        </Box>
-      
-    </Container>
+        <List component="nav">
+          <ListItem button onClick={() => setSelectedPage('Metamask')} selected={selectedPage === 'Metamask'}>
+            <ListItemText primary="Metamask" />
+          </ListItem>
+          <ListItem button onClick={() => handleClick('HowToInstall')} selected={selectedPage === 'HowToInstall'}>
+            <ListItemText primary="How to Install" />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button onClick={() => setSelectedPage('Chrome')} selected={selectedPage === 'Chrome'} sx={{ paddingLeft: 4 }}>
+                <ListItemText primary="Chrome" />
+              </ListItem>
+              <ListItem button onClick={() => setSelectedPage('Firefox')} selected={selectedPage === 'Firefox'} sx={{ paddingLeft: 4 }}>
+                <ListItemText primary="Firefox" />
+              </ListItem>
+              <ListItem button onClick={() => setSelectedPage('Edge')} selected={selectedPage === 'Edge'} sx={{ paddingLeft: 4 }}>
+                <ListItemText primary="Edge" />
+              </ListItem>
+              <ListItem button onClick={() => setSelectedPage('Brave')} selected={selectedPage === 'Brave'} sx={{ paddingLeft: 4 }}>
+                <ListItemText primary="Brave" />
+              </ListItem>
+            </List>
+          </Collapse>
+          <ListItem button onClick={() => setSelectedPage('GettingStarted')} selected={selectedPage === 'GettingStarted'}>
+            <ListItemText primary="Getting Started" />
+          </ListItem>
+        </List>
+      </Paper>
+    </Grid>
+        <Grid item xs={12} md={9} style={{ }}>
+          <Paper elevation={3} style={{ height: '100%' }}>
+            {/* Render selected page based on state */}
+            {selectedPage === 'GettingStarted' && <GettingStartedPage />}
+            {selectedPage === 'Metamask' && <MetamaskPage />}
+            {selectedPage === 'Chrome' && <ChromePage />}
+            {selectedPage === 'Firefox' && <FirefoxPage />}
+            {selectedPage === 'Edge' && <EdgePage />}
+            {selectedPage === 'Brave' && <BravePage />}
+          </Paper>
+        </Grid>
+      </Grid>
+      <Footer />
     </Box>
   );
 };

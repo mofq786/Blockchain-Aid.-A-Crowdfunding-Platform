@@ -76,11 +76,11 @@ function NavBar() {
           >
             Campaigns
           </Button>
-          <Button variant="text" onClick={() => navigate("/guide")} sx={{ color: "#ffffff", mr:12 }}>
+          <Button variant="text" onClick={() => navigate("/guide")} color={location.pathname === "/guide" ? 'warning' : 'inherit'}>
             Guide
           </Button>
           
-          <Button variant="contained" color="success" onClick={() => navigate("/create-campaign")} sx={{ color: "#ffffff",ml:4 }}>
+          <Button variant="contained" color="success" onClick={() => navigate("/create-campaign")} >
             Create Campaign
           </Button>
           {wallet.status === "connected" ? (

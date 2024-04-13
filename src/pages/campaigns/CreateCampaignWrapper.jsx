@@ -31,8 +31,6 @@ function Copyright() {
 
 const steps = [
   "Campaign Details",
-  // "Set Milestones", -- next iteration feature
-  // "Review campaign details", --- this feature needs milestones to be set, else meaning-less.
 ];
 
 function getStepContent(step) {

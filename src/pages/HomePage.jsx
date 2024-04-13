@@ -83,7 +83,7 @@ function HomePage() {
           {/* <Typography variant="h2" align="center" color="#ffffff" gutterBottom>
             BlockchainAid: Empowering NGOs for Change
           </Typography> */}
-          <Typography variant="body1" paragraph sx={{ fontSize: {xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem', xl: '2rem'}, color: '#fbfbfb',fontFamily :{RM} }} style={{ textAlign: 'justify',fontFamily:'monospace' }}>
+          <Typography variant="body1" paragraph sx={{ fontSize: {xs: '1rem', sm: '1.25rem', md: '1.5rem', lg: '1.75rem', xl: '2rem'}, color: '#fbfbfb' }} style={{ textAlign: 'justify',fontFamily:'monospace' }}>
             A revolutionary platform where technology meets compassion, where blockchain empowers dreams, and where your support transforms lives. We're dedicated to harnessing the potential of blockchain technology to create a more transparent, efficient, and connected world for NGOs and their supporters.
           </Typography>
           </Box>

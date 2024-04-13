@@ -17,6 +17,7 @@ import { LoadingButton } from "@mui/lab";
 
 // local imports..
 import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
 // service imports..
 import axios from "axios";
 import { useEffect } from "react";
@@ -236,45 +237,41 @@ function ViewCampaign() {
   function ShowCampaignDetails() {
     return (
       <>
-        <Box sx={{ margin: 5, width: "40%" }}>
-          <Stack direction={"column"} spacing={2}>
-            <Typography variant="caption">About Campaign</Typography>
-            <Container>
-              <Stack spacing={0.8}>
-                <Box
-                  display={"flex"}
+        <Box sx={{ margin: 5, width: {sm:"50%",xs:"100%"} }}>
+        <Stack direction="column" spacing={2}>
+        <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '1rem', sm: '0.75rem', md: '1rem', lg: '1.25rem', xl: '1.5rem'}}}>
+        About Campaign
+      </Typography>
+      <Container sx={{ padding: 2, backgroundColor: "#EDFF9B", borderRadius: 3 }}>
+        <Box display="flex" alignItems="center">
+          <Box display={"flex"}
                   flexDirection="row"
-                  alignItems={"flex-start"}
-                >
-                  <Typography variant="h4" gutterBottom>
-                    {campaignData.title}
-                  </Typography>
-                  <Chip
-                    label={campaignData.campaignStatus}
-                    size="small"
-                    color={
-                      campaignData.campaignStatus == "ACTIVE" ||
-                      campaignData.campaignStatus == "SUCCESS"
-                        ? "success"
-                        : "error"
-                    }
-                  />
-                </Box>
-                <Typography variant="body2">
-                  {campaignData.description}
-                </Typography>
-
-                <Link
-                  variant="body2"
-                  href={`https://sepolia.etherscan.io/address/${campaignData.id}`}
-                >
-                  View on Sepolia Etherscan
-                </Link>
-              </Stack>
-            </Container>
-            <ShowContributionDetails />
-            <EndCampaign />
-          </Stack>
+                  alignItems={"flex-start"} sx={{flex:1}}>
+          <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '1rem', sm: '0.75rem', md: '1rem', lg: '1.25rem', xl: '1.5rem'}}}>
+            {campaignData.title}
+          </Typography>
+          <Chip
+            label={campaignData.campaignStatus}
+            size="small"
+            color={campaignData.campaignStatus === "ACTIVE" || campaignData.campaignStatus === "SUCCESS" ? "success" : "error"}
+          />
+          </Box>
+          <a href={`https://sepolia.etherscan.io/address/${campaignData.id}`} target="_blank" rel="noopener noreferrer">
+          <Button variant="contained" fontWeight="bold" color="primary" sx={{ mt: 1, alignContent:'end'}}>
+            View on Sepolia Etherscan
+          </Button>
+        </a>
+          
+        </Box>
+        <Typography variant="body2">
+          <br/>
+          <strong>Description</strong>: {campaignData.description}
+        </Typography>
+        
+      </Container>
+      <ShowContributionDetails />
+      <EndCampaign />
+    </Stack>
         </Box>
       </>
     );
@@ -283,32 +280,37 @@ function ViewCampaign() {
   function ShowContributionDetails() {
     return (
       <>
-        <Typography variant="caption">Contribution Details</Typography>
+      <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '1rem', sm: '0.75rem', md: '1rem', lg: '1.25rem', xl: '1.5rem'}}}>Contribution Details</Typography>
+      <Container
+      width="100%"
+      sx={{ padding: 2, backgroundColor: "#EDFF9B", borderRadius: 3 }}>
+        
         <Container>
-          <Typography variant="caption">Minimum Contribution amount</Typography>
+        <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem'} }}>Minimum Contribution amount</Typography>
           <Typography>{campaignData.minContribAmount} ETH</Typography>
         </Container>
         <Container>
-          <Typography variant="caption">Goal</Typography>
+        <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem'} }}>Goal</Typography>
           <Typography>{`${campaignData.ethRaised}`} ETH</Typography>
         </Container>
         <Container>
-          <Typography variant="caption">
+        <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem'}}}>
             Wallet Address of FundRaiser
           </Typography>
           <Typography>{`${campaignData.createdBy}`}</Typography>
         </Container>
         <Container>
-          <Typography variant="caption">
+        <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem'}}}>
             Contributions are accepted till <i>(Deadline)</i>
           </Typography>
           <Typography>{`${new Date(campaignData.deadline)}`}</Typography>
           {(campaignData.campaignStatus == "EXPIRED" ||
             campaignData.campaignStatus == "ABORTED") && (
-            <Typography>
+              <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem'} }}>
               <i>No contributions can be accepted now.</i>
             </Typography>
           )}
+        </Container>
         </Container>
       </>
     );
@@ -319,14 +321,14 @@ function ViewCampaign() {
       <>
         <Container
           maxWidth="sm"
-          sx={{ padding: 0.5, backgroundColor: "#fae588", borderRadius: 3 }}
+          sx={{ padding: 0.5, backgroundColor: "#EDFF9B", borderRadius: 3 }}
         >
-          <Typography variant="h6">Campaign balance</Typography>
+          <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem'}}}>Campaign balance</Typography>
           <Typography variant="caption">
             Amount stored in smart contract.
           </Typography>
           <LinearProgressWithLabel
-            value={(campaignData.ethFunded / campaignData.ethRaised) * 100}
+            color="success" value={(campaignData.ethFunded / campaignData.ethRaised) * 100}
           />
           <Typography variant="body2">
             {`${campaignData.ethFunded}`} ETH funded by{" "}
@@ -345,7 +347,7 @@ function ViewCampaign() {
         maxWidth="sm"
       >
         <Stack direction="column" spacing={1.2}>
-          <Typography variant="h6">Be a Contributor</Typography>
+        <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem'}}}>Be a Contributor</Typography>
           <Stack direction="row">
             <Typography variant="caption">
               How much would you like to fund?
@@ -446,11 +448,11 @@ function ViewCampaign() {
   function WithDrawFunds() {
     return (
       <Container
-        sx={{ padding: 2, backgroundColor: "#FFE8E3", borderRadius: 3 }}
+        sx={{ padding: 2, backgroundColor: "#EACEE5", borderRadius: 3 }}
         fixed
         maxWidth="sm"
       >
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.5rem', md: '0.75rem', lg: '1rem', xl: '1.25rem'}}}>
           Withdraw Raised Funds
         </Typography>
         {/* -------- Here.. based on the deadline of the campaign, validate can withdraw or not. */}
@@ -491,7 +493,7 @@ function ViewCampaign() {
             fullWidth
             variant="contained"
             loading={withdrawFormState.isSubmitting}
-            color="error"
+            color="secondary"
             disabled={withdrawFormState.isSubmitting}
           >
             End campaign &amp; withdraw
@@ -508,20 +510,20 @@ function ViewCampaign() {
           (campaignData.campaignStatus === "ACTIVE" ||
             campaignData.campaignStatus === "SUCCESS") && (
             <>
-              <Typography variant="caption">Danger Zone</Typography>
+              <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.75rem', md: '1rem', lg: '1.25rem', xl: '1.5rem'},fontFamily:'monospace' }}>Danger Zone</Typography>
               <Container
                 sx={{
-                  backgroundColor: "#e5989b",
+                  backgroundColor: "#EE0630",
                   padding: 1,
                   borderRadius: 3,
                 }}
               >
                 <Stack direction="row" alignItems={"center"}>
                   <Container>
-                    <Typography variant="body1">
+                    <Typography variant="body1" color="#ffffff">
                       <strong>Quit</strong> &amp; <strong>Refund</strong>
                     </Typography>
-                    <Typography variant="caption">
+                    <Typography variant="caption" color="#FFFF98">
                       Once you end a campaign, there is no going back. Please be
                       certain.
                     </Typography>
@@ -529,7 +531,7 @@ function ViewCampaign() {
                   <LoadingButton
                     variant="contained"
                     loading={abortFormState.isSubmitting}
-                    color="error"
+                    color="warning"
                     size="small"
                     onClick={() => setShowEndCampaignConfirmation(true)}
                   >
@@ -643,55 +645,57 @@ function ViewCampaign() {
     <>
       <NavBar />
       <Stack
-        direction={"row"}
-        divider={<Divider orientation="vertical" flexItem />}
-        spacing={2}
-        justifyContent="space-around"
-        alignItems="baseline"
-      >
-        <ShowCampaignDetails />
-        <Box sx={{ margin: 10, width: "60%" }}>
-          <Stack direction={"column"} spacing={2}>
-            <Typography variant="caption">
-              Current Status of campaign
+  direction={{ xs: "column", sm: "row" }} // Change direction based on screen size
+  divider={<Divider orientation={{ xs: "horizontal", sm: "vertical",lg: "vertical",md: "vertical" }} flexItem />}
+  spacing={2}
+  justifyContent={{ xs: "center", sm: "space-around" }} // Adjust justification based on screen size
+  alignItems={{ xs: "flex-start", sm: "baseline" }} // Adjust alignment based on screen size
+>
+  <ShowCampaignDetails />
+  <Box sx={{ margin: 2, width: { xs: "100%", sm: "40%" } }}> {/* Adjust width based on screen size */}
+    <Stack direction={"column"} spacing={2}>
+    <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '1rem', sm: '0.75rem', md: '1rem', lg: '1.25rem', xl: '1.5rem'}}}>
+        Current Status of campaign
+      </Typography>
+      <ShowCampaignBalance />
+      {campaignData.campaignStatus === "ACTIVE" ||
+      campaignData.campaignStatus === "SUCCESS" ? (
+        <>
+          {wallet.account !== campaignData.createdBy ? (
+            <>
+              <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '1rem', sm: '0.75rem', md: '1rem', lg: '1.25rem', xl: '1.5rem'}}}>
+                Contribute
+              </Typography>
+              <BecomeBacker />
+            </>
+          ) : (
+            <>
+              <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.75rem', md: '1rem', lg: '1.25rem', xl: '1.5rem'},fontFamily:'monospace' }}>
+                Withdraw
+              </Typography>
+              <WithDrawFunds />
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <Typography variant="caption" color="#000000" fontWeight="bold" paragraph sx={{ margin: 0,fontSize: {xs: '0.75rem', sm: '0.75rem', md: '1rem', lg: '1.25rem', xl: '1.5rem'},fontFamily:'monospace' }}>
+            End status
+          </Typography>
+          <Container>
+            <Typography>
+              {campaignData.campaignStatus === "EXPIRED"
+                ? "Campaign has ended successfully..!!"
+                : "Campaign has aborted in between. <fund raiser's reason here (In next version)>"
+              }
             </Typography>
-            <ShowCampaignBalance />
-            {campaignData.campaignStatus === "ACTIVE" ||
-            campaignData.campaignStatus == "SUCCESS" ? (
-              <>
-                {wallet.account !== campaignData.createdBy ? (
-                  <>
-                    <Typography variant="caption" sx={{ margin: 0 }}>
-                      Contribute
-                    </Typography>
-                    <BecomeBacker />
-                  </>
-                ) : (
-                  <>
-                    <Typography variant="caption" sx={{ margin: 0 }}>
-                      Withdraw
-                    </Typography>
-                    <WithDrawFunds />
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                <Typography variant="caption" sx={{ margin: 0 }}>
-                  End status
-                </Typography>
-                <Container>
-                  <Typography>
-                    {campaignData.campaignStatus == "EXPIRED"
-                      ? "Campaign has ended successfully..!!"
-                      : "Campign has aborted in between.  <fund raiser's reason here (In next version)>"}
-                  </Typography>
-                </Container>
-              </>
-            )}
-          </Stack>
-        </Box>
-      </Stack>
+          </Container>
+        </>
+      )}
+    </Stack>
+  </Box>
+</Stack>
+
       <EndCampaignDialog />
       <Snackbar
         open={showResponse}
@@ -703,6 +707,7 @@ function ViewCampaign() {
           {responseMsg}
         </Alert>
       </Snackbar>
+      <Footer/>
     </>
   );
 }
