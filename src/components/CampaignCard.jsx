@@ -8,15 +8,6 @@ import { Box, ButtonBase, IconButton, Stack } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import LinearProgress from '@mui/material/LinearProgress';
 
-// const fetchETHRate = async () => {
-//   try {
-//     const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=INR');
-//     return response.data.ethereum.inr;  // Extract the INR rate from the response
-//   } catch (error) {
-//     console.error('Error fetching ETH to INR rate:', error);
-//     return null;
-//   }
-// };
 
 function CampaignCard(props) {
   const navigate = useNavigate();
@@ -30,14 +21,6 @@ function CampaignCard(props) {
     deadline,
     id,
   } = props.details;
-
-  // useEffect(() => {
-  //   const getRate = async () => {
-  //     const rate = await fetchETHRate();
-  //     setEthToInrRate(rate);
-  //   };
-  //   getRate();
-  // }, []);
 
   // Calculate days left
   const today = Date.now();
@@ -106,12 +89,7 @@ function CampaignCard(props) {
               <Typography variant="caption" sx={{ color: '#808191', mt: 0.5 }}>
                 Days Left
               </Typography>
-              {/* <Typography variant="body2" sx={{ color: '#b2b3bd', fontWeight: 'medium' }}>
-                ₹ {fundedInINR.toLocaleString()}
-              </Typography>
-              <Typography variant="caption" sx={{ color: '#808191', mt: 0.5 }}>
-                Raised of ₹ {raisedInINR.toLocaleString()}
-              </Typography> */}
+              
             </Box>
           </Box>
           </Stack>

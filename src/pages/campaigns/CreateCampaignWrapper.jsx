@@ -14,8 +14,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import FillCampaignDetails from "./FillCampaignDetails";
-//import SetMileStones from "./SetMileStones";
-//import ReviewCampaignDetails from "./ReviewCampaignDetails";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
