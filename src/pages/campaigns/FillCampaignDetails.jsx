@@ -6,6 +6,7 @@ import {
   Button,
   Container,
   TextField,
+  MenuItem,
   Typography,
   styled,
   Avatar,
@@ -15,7 +16,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { LoadingButton } from "@mui/lab";
@@ -35,7 +36,8 @@ import { useWallet } from "use-wallet";
 import blockchainAid from "../../../utils/contract/BlockchainAid";
 import web3 from "../../../utils/web3";
 
-const api_url = "https://eth-sepolia.g.alchemy.com/v2/zKcZ0eD-TwTnQ4iMLH9GTNIjl-exhAV1";
+const api_url =
+  "https://eth-sepolia.g.alchemy.com/v2/zKcZ0eD-TwTnQ4iMLH9GTNIjl-exhAV1";
 //const api_url = "http://localhost:5173/";
 
 function FillCampaignDetails() {
@@ -58,6 +60,86 @@ function FillCampaignDetails() {
   const [responseMsg, setResponseMsg] = React.useState(""); // to display error messages.
   const [showResponse, setShowResponse] = React.useState(false); // To know whether error occured. ⁉ why not use length of error message
   const [responseSeverity, setResponseSeverity] = React.useState("error");
+
+  const [ethAmount, setEthAmount] = useState("");
+  const [ethMax, setEthMax] = useState("");
+
+  const [selectedCurrency, setSelectedCurrency] = useState("INR");
+  const [convertedAmount, setConvertedAmount] = useState("");
+  const [convertedAmount1, setConvertedAmount1] = useState("");
+  const [conversionRates, setConversionRates] = useState({});
+
+  const currencies = ["USD", "EUR", "GBP", "INR"]; // List of supported currencies
+
+  useEffect(() => {
+    // Fetch conversion rates when the component mounts
+    fetchConversionRates();
+  }, []);
+
+  const fetchConversionRates = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd,eur,gbp,inr"
+      );
+      setConversionRates(response.data.ethereum);
+    } catch (error) {
+      console.error("Error fetching conversion rates:", error);
+    }
+  };
+
+  const handleEthAmountChange = (event) => {
+    const { value } = event.target;
+    setEthAmount(value);
+
+    // Convert the entered ETH amount to the selected currency
+    convertEthToSelectedCurrency(value, selectedCurrency);
+  };
+
+  const handleEthMaxChange = (event) => {
+    const { value } = event.target;
+    setEthMax(value);
+
+    // Convert the entered ETH amount to the selected currency
+    convertEthToSelectedCurrency1(value, selectedCurrency);
+  };
+
+  const handleCurrencyChange = (event) => {
+    const { value } = event.target;
+    setSelectedCurrency(value);
+
+    // Convert the entered ETH amount to the newly selected currency
+    convertEthToSelectedCurrency(ethAmount, value);
+  };
+
+  const handleCurrencyChange1 = (event) => {
+    const { value } = event.target;
+    setSelectedCurrency(value);
+
+    // Convert the entered ETH amount to the newly selected currency
+    convertEthToSelectedCurrency1(ethMax, value);
+  };
+
+  const convertEthToSelectedCurrency = (amountInEth, currency) => {
+    // Check if conversion rates have been fetched
+    if (Object.keys(conversionRates).length === 0) return;
+    const Currency = currency.toLowerCase();
+    console.log(currency);
+    // Use the fetched rate to calculate the converted amount for the selected currency
+    let rate = conversionRates[Currency];
+    let convertedAmount = amountInEth * rate;
+    setConvertedAmount(convertedAmount.toFixed(2)); // Round to 2 decimal places
+  };
+
+  const convertEthToSelectedCurrency1 = (amountInEth, currency) => {
+    // Check if conversion rates have been fetched
+    if (Object.keys(conversionRates).length === 0) return;
+    const Currency = currency.toLowerCase();
+    console.log(currency);
+    // Use the fetched rate to calculate the converted amount for the selected currency
+    let rate = conversionRates[Currency];
+    let convertedAmount1 = amountInEth * rate;
+    setConvertedAmount1(convertedAmount1.toFixed(2)); // Round to 2 decimal places
+  };
 
   // helpers..
   async function handleFilledCampaignDetails(data) {
@@ -151,7 +233,7 @@ function FillCampaignDetails() {
               variant="h5"
               textAlign={"center"}
               fontWeight="bold"
-              sx={{ paddingBottom: 2.5 }}
+              sx={{ paddingBottom: 2.5, paddingTop: 0 }}
             >
               Campaign Details
             </Typography>
@@ -227,26 +309,23 @@ function FillCampaignDetails() {
                     <TextField
                       id="title"
                       {...register("title", { required: true })}
-                      label="Campaign Title"
+                      label="Campaign Title&nbsp; &nbsp;"
                       size="small"
                       fullWidth
                       disabled={isSubmitting}
                       variant="outlined"
                       helperText="About this campaign in 2-3 words"
                     />
+
                     <TextField
-                      id="minContribAmount"
-                      {...register("minContribAmount", { required: true })}
-                      label="Minimum contribution amount"
+                      id="bannerUrl"
+                      {...register("bannerUrl", { required: true })}
+                      label="Banner Image URL &nbsp;"
+                      type="url"
                       size="small"
-                      type="number"
-                      inputProps={{
-                        min: 0,
-                        step: 0.00001,
-                      }}
                       fullWidth
-                      variant="outlined"
-                      helperText="How much minimum amount you are expecting from Contributors ?"
+                      title="This image will be shown as a banner"
+                      helperText="Preferably from unsplash.com, flaticon.com, pexels.com."
                       disabled={isSubmitting}
                     />
                   </Box>
@@ -257,7 +336,7 @@ function FillCampaignDetails() {
                       id="description"
                       name="description"
                       {...register("description", { required: true })}
-                      label="Campaign Description"
+                      label="Campaign Description &nbsp; &nbsp;"
                       size="small"
                       multiline
                       rows={4.3}
@@ -267,33 +346,101 @@ function FillCampaignDetails() {
                     />
                   </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+
+                <Grid item xs={6} sm={6}>
                   <TextField
                     id="ethRaised"
                     {...register("ethRaised", { required: true })}
-                    label="Goal (ETH)"
+                    label="Goal (ETH)&nbsp;&nbsp;"
                     fullWidth
-                    size="small"
+                    size="medium"
                     type="number"
                     helperText="Amount to be raised"
                     inputProps={{
                       // min: 0.00000001,
                       step: 0.00001,
                     }}
+                    value={ethMax}
+                    onChange={handleEthMaxChange}
                     disabled={isSubmitting}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={6} sm={6}>
+                  {/* Display the converted amount of ETH in the selected currency */}
                   <TextField
-                    id="bannerUrl"
-                    {...register("bannerUrl", { required: true })}
-                    label="Banner Image URL"
-                    type="url"
-                    size="small"
+                    id="convertedAmount1"
+                    label={`Converted amount (${selectedCurrency})`}
+                    size="medium"
+                    type="text"
                     fullWidth
-                    title="This image will be shown as a banner"
-                    helperText="Preferably from unsplash.com, flaticon.com, pexels.com."
-                    disabled={isSubmitting}
+                    InputProps={{
+                      endAdornment: (
+                        <TextField
+                          variant="standard"
+                          id="currency-select"
+                          select
+                          label="Select currency"
+                          value={selectedCurrency}
+                          onChange={handleCurrencyChange1}
+                          fullWidth
+                          size="small"
+                        >
+                          {currencies.map((currency) => (
+                            <MenuItem key={currency} value={currency}>
+                              {currency}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      ),
+                    }}
+                    value={convertedAmount1}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                  <TextField
+                    id="minContribAmount"
+                    label="Minimum contribution amount (ETH)"
+                    size="medium"
+                    type="number"
+                    inputProps={{
+                      min: 0,
+                      step: 0.00001,
+                    }}
+                    fullWidth
+                    value={ethAmount}
+                    onChange={handleEthAmountChange}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                  {/* Display the converted amount of ETH in the selected currency */}
+                  <TextField
+                    id="convertedAmount"
+                    label={`Converted amount (${selectedCurrency})`}
+                    size="medium"
+                    type="text"
+                    fullWidth
+                    value={convertedAmount}
+                    InputProps={{
+                      endAdornment: (
+                        <TextField
+                          variant="standard"
+                          id="currency-select"
+                          select
+                          value={selectedCurrency}
+                          onChange={handleCurrencyChange}
+                          size="small"
+                          label="Select Currency"
+                          fullWidth
+                        >
+                          {currencies.map((currency) => (
+                            <MenuItem key={currency} value={currency}>
+                              {currency}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      ),
+                    }}
                   />
                 </Grid>
 
@@ -336,10 +483,9 @@ function FillCampaignDetails() {
                   {/* Just to be aligned with the date&time. */}
                   <Typography variant="caption">&nbsp;</Typography>
                   <TextField
-                    required
                     id="walletAddress"
                     name="walletAddress"
-                    label="Wallet Address"
+                    label="Wallet Address &nbsp; &nbsp;"
                     fullWidth
                     value={wallet.account}
                     inputProps={{
@@ -393,7 +539,7 @@ function FillCampaignDetails() {
           {responseMsg}
         </Alert>
       </Snackbar>
-      <Footer/>
+      <Footer />
     </>
   );
 }

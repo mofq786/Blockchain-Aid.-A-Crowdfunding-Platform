@@ -2,8 +2,8 @@
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
-import { Box, Button, fabClasses, styled } from "@mui/material";
-import { Container, Link, TextField, Typography } from "@mui/material";
+import { Box, Button, fabClasses, styled, Grid } from "@mui/material";
+import { Container, Link, TextField, MenuItem, Typography } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import Modal from "@mui/material/Modal";
 import FormGroup from "@mui/material/FormGroup";
@@ -14,13 +14,14 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Chip from "@mui/material/Chip";
 import { LoadingButton } from "@mui/lab";
-
+import InputAdornment from '@mui/material/InputAdornment';
 // local imports..
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 // service imports..
 import axios from "axios";
-import { useEffect } from "react";
+
+import { useEffect, useState } from "react";
 // Wallet connection..
 import { useWallet } from "use-wallet";
 // form handling
@@ -46,6 +47,58 @@ function ViewCampaign() {
   const campaignId = window.location.pathname.substring(10); // will get as '/campaign/xx`, trimmed to get ONLY the id.
 
   // hooks..
+  const [ethAmount, setEthAmount] = useState("");
+  const [selectedCurrency, setSelectedCurrency] = useState("INR");
+  const [convertedAmount, setConvertedAmount] = useState("");
+  const [conversionRates, setConversionRates] = useState({});
+
+  const currencies = ["USD", "EUR", "GBP", "INR"]; // List of supported currencies
+
+  useEffect(() => {
+    // Fetch conversion rates when the component mounts
+    fetchConversionRates();
+  }, []);
+
+  const fetchConversionRates = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd,eur,gbp,inr"
+      );
+      setConversionRates(response.data.ethereum);
+    } catch (error) {
+      console.error("Error fetching conversion rates:", error);
+    }
+  };
+
+  const handleEthAmountChange = (event) => {
+    const { value } = event.target;
+    setEthAmount(value);
+
+    // Convert the entered ETH amount to the selected currency
+    convertEthToSelectedCurrency(value, selectedCurrency);
+  };
+
+  const handleCurrencyChange = (event) => {
+    const { value } = event.target;
+    setSelectedCurrency(value);
+
+    // Convert the entered ETH amount to the newly selected currency
+    convertEthToSelectedCurrency(ethAmount, value);
+  };
+
+  const convertEthToSelectedCurrency = (amountInEth, currency) => {
+    // Check if conversion rates have been fetched
+    if (Object.keys(conversionRates).length === 0) return;
+    const Currency = currency.toLowerCase();
+    console.log(currency);
+    // Use the fetched rate to calculate the converted amount for the selected currency
+    let rate = conversionRates[Currency];
+    let convertedAmount = amountInEth * rate;
+    setConvertedAmount(convertedAmount.toFixed(2)); // Round to 2 decimal places
+  };
+
+
+
   const [responseMsg, setResponseMsg] = React.useState(""); // to display error messages.
   const [showResponse, setShowResponse] = React.useState(false); // To know whether error occured. ⁉ why not use length of error message
   const [responseSeverity, setResponseSeverity] = React.useState("error");
@@ -375,20 +428,60 @@ function ViewCampaign() {
             </Alert>
           ) : (
             <form onSubmit={contributionHandleSubmit(handleContributedFunds)}>
-              <TextField
-                label="Contribution amount"
-                type={"number"}
-                inputProps={{
-                  step: 0.00001,
-                  min: campaignData[minAmountKey],
-                  // max: campaignData[raisedMoneyKey],
-                }}
-                disabled={contributionFormState.isSubmitting}
-                {...contributionRegister("contribAmount", { required: true })}
-                helperText="Enter amount in Ether you want to contribute."
-                fullWidth
-                size="small"
-              />
+              <Grid container spacing={2}>
+  <Grid item xs={6}>
+    <TextField
+      label="Contribution amount &nbsp; &nbsp; "
+      type="number"
+      inputProps={{
+        step: 0.00001,
+        min: campaignData[minAmountKey],
+        endAdornment: (<InputAdornment position="end">ETH</InputAdornment>),
+      }}
+      
+      disabled={contributionFormState.isSubmitting}
+      {...contributionRegister("contribAmount", { required: true })}
+      helperText="Enter amount in Ether you want to contribute."
+      fullWidth
+      size="small"
+      value={ethAmount}
+      onChange={handleEthAmountChange}
+    />
+  </Grid>
+  <Grid item xs={6}>
+    <TextField
+      id="convertedAmount"
+      label='Fiat Currency &nbsp;'
+      size="small"
+      type="text"
+      fullWidth
+      value={convertedAmount}
+      InputProps={{
+        endAdornment: (
+          <TextField
+            variant="standard"
+            id="currency-select"
+            select
+            value={selectedCurrency}
+            onChange={handleCurrencyChange}
+            size="small"
+            
+            fullWidth
+          >
+            {currencies.map((currency) => (
+              <MenuItem key={currency} value={currency}>
+                {currency}
+              </MenuItem>
+            ))}
+          </TextField>
+        ),
+      }}
+      disabled={contributionFormState.isSubmitting}
+    />
+  </Grid>
+</Grid>
+
+              
               {contributionError && (
                 <Alert
                   severity="error"
