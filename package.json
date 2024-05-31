@@ -8,8 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@metamask/providers": "^16.0.0",
     "@mui/icons-material": "^5.10.9",
     "@mui/lab": "^5.0.0-alpha.109",

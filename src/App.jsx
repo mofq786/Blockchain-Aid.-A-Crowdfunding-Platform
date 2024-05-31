@@ -9,6 +9,7 @@ import { Box } from "@mui/material";
 import CreateCampaignWrapper from "./pages/campaigns/CreateCampaignWrapper";
 import FillCampaignDetails from "./pages/campaigns/FillCampaignDetails";
 import HomePage from "./pages/HomePage";
+import AboutUs from "./pages/AboutUs";
 import ActiveCampaigns from "./pages/campaigns/ActiveCampaigns";
 import ViewCampaign from "./pages/campaigns/ViewCampaign";
 import Guide from "./pages/Guide";
@@ -42,6 +43,8 @@ function App() {
             <Route path="/active-campaigns" element={<ActiveCampaigns />} />
             <Route path="/guide" element={<Guide />} />
             <Route path="/campaign/*" element={<ViewCampaign />} />
+            <Route path="/about-us" element={<AboutUs/>}/>
+            
           </Routes>
         
       </Router>

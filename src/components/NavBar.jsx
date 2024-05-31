@@ -35,6 +35,8 @@ function NavBar() {
     { name: "Home", icon: <HomeIcon />, path: "/" },
     { name: "Campaigns", icon: <CampaignIcon />, path: "/active-campaigns" },
     { name: "Guide", icon: <GuideIcon />, path: "/guide" },
+    // { name: "About Us", path: "/guide" },
+
   ];
 
   const drawer = (
@@ -79,6 +81,13 @@ function NavBar() {
           <Button variant="text" onClick={() => navigate("/guide")} color={location.pathname === "/guide" ? 'warning' : 'inherit'}>
             Guide
           </Button>
+
+          {/* <Button variant="text" onClick={() => navigate("/about-us")} 
+          color={location.pathname === "/about-us" ? 'warning' : 'inherit'}
+          
+          >
+            About Us
+          </Button> */}
           
           <Button variant="contained" color="success" onClick={() => navigate("/create-campaign")} >
             Create Campaign
