@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     target: 'es2021', // or 'esnext'
   //  build: {
-  //   outDir: 'dist', // Ensure this is set to 'dist'
+    outDir: 'dist', // Ensure this is set to 'dist'
   // },
   },
 })
