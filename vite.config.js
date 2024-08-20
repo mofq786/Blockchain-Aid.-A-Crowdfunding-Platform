@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     target: 'es2021', // or 'esnext'
     rollupOptions: {
-      input: './src/main.jsx', // Ensure this path is correct
+      input: 'src/main.jsx', // Ensure this path is correct
     },
   },
 })
