@@ -779,7 +779,7 @@ function ViewCampaign() {
             <Typography>
               {campaignData.campaignStatus === "EXPIRED"
                 ? "Campaign has ended successfully..!!"
-                : "Campaign has aborted in between. <fund raiser's reason here (In next version)>"
+                : "Campaign has Aborted."
               }
             </Typography>
           </Container>

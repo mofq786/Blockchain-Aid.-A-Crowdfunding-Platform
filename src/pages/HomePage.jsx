@@ -61,7 +61,7 @@ function HomePage() {
 
   return (
     
-    <Box className="App" sx={{background: "linear-gradient(to bottom right, #000099 0%, #000099 100%)", minHeight:'100vh'}}>
+    <Box className="App" sx={{background: "linear-gradient(to bottom right, #b8c8e0 0%, #b8c8e0 100%)", minHeight:'100vh'}}>
       
       <NavBar />
       {/* <Stack direction="row" spacing={2}></Stack> */}
