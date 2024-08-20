@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: 'es2021', // or 'esnext'
-   build: {
-    outDir: 'dist', // Ensure this is set to 'dist'
-  },
+  //  build: {
+  //   outDir: 'dist', // Ensure this is set to 'dist'
+  // },
   },
 })
