@@ -22,15 +22,14 @@ jobs:
       run: npm install --legacy-peer-deps
 
     - name: Build
-      env:
-          API_KEY: ${{ secrets.API_KEY }}
-      run: 
-          npm run build
-          npm run deploy
+      run: |
+        echo "INFURA_API_KEY=${{ secrets.INFURA_API_KEY }}" > .env
+        echo "PRIVATE_KEY=${{ secrets.PRIVATE_KEY }}" >> .env
+        npm run build
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.2.1
       with:
         branch: gh-pages
         folder: dist
-        token: ${{ secrets.API_KEY }}
+        token: ${{ secrets.GITHUB_TOKEN }}
