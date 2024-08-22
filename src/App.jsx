@@ -13,7 +13,7 @@ import HomePage from "./pages/HomePage";
 import ActiveCampaigns from "./pages/campaigns/ActiveCampaigns";
 import ViewCampaign from "./pages/campaigns/ViewCampaign";
 import Guide from "./pages/Guide";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 // For wallet connection & usage..
 import { UseWalletProvider } from "use-wallet";
 
