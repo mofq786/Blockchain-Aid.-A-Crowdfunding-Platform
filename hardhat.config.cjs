@@ -3,9 +3,6 @@ require("@nomiclabs/hardhat-ethers");
 require("hardhat-deploy");
 require("@nomicfoundation/hardhat-toolbox");
 
-console.log(process.env.INFURA_API_KEY);
-console.log(process.env.PRIVATE_KEY);
-
 module.exports = {
   solidity: "0.8.24",
   settings: {
@@ -27,7 +24,7 @@ module.exports = {
     sepolia: {
 
       url: "https://eth-sepolia.g.alchemy.com/v2/zKcZ0eD-TwTnQ4iMLH9GTNIjl-exhAV1",
-      accounts: [process.env.PRIVATE_KEY],
+      //accounts: [process.env.PRIVATE_KEY],
       gasPrice: 300000000000,
       saveDeployments: true,
       deploy: ["scripts/"],
